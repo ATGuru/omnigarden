@@ -1,0 +1,75 @@
+name: omnigarden
+description: Your hyper-local planting companion — encyclopedia, calendar, and journal.
+publish_to: 'none'
+version: 1.0.0-beta+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: '>=3.16.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.4.10
+  riverpod_annotation: ^2.3.4
+
+  # Navigation
+  go_router: ^13.2.0
+
+  # Supabase (stubbed in Phase 1 — wired in Phase 2)
+  supabase_flutter: ^2.3.4
+  flutter_dotenv: ^5.1.0
+
+  # Fonts
+  google_fonts: ^6.2.1
+
+  # UI utilities
+  shimmer: ^3.0.0                  # loading skeletons
+  cached_network_image: ^3.3.1     # plant photos
+  flutter_svg: ^2.0.9
+  gap: ^3.0.1                      # clean spacing widget
+
+  # Storage (for guest mode zip)
+  shared_preferences: ^2.2.2
+  image_picker: ^1.1.2
+  permission_handler: ^11.0.0
+
+  # Utils
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+  equatable: ^2.0.5
+  video_player: ^2.8.0
+  flutter_native_splash: ^2.4.0
+
+  # Export & Sharing
+  pdf: ^3.11.0
+  printing: ^5.13.1
+  share_plus: ^10.0.0
+  url_launcher: ^6.3.0
+
+  # Notifications
+  flutter_local_notifications: ^17.2.2
+  timezone: ^0.9.4
+  lunar: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  build_runner: ^2.4.8
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
+  riverpod_generator: ^2.3.10
+  custom_lint: ^0.6.3
+  riverpod_lint: ^2.3.10
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/stages/
+    - assets/fonts/
+    - .env

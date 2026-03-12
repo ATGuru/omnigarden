@@ -1,0 +1,7 @@
+flutter_native_splash:
+  color: "#1A1A17"
+  image: assets/images/stages/stage_seed.jpg
+  android_12:
+    color: "#1A1A17"
+    image: assets/images/stages/stage_seed.jpg
+    icon_background_color: "#1A1A17"
