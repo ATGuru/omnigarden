@@ -154,11 +154,11 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           _InfoRow(emoji: '🌿', label: 'App', value: 'OmniGarden'),
           const SizedBox(height: 8),
-          _InfoRow(emoji: '📦', label: 'Version', value: '0.3.0 (Phase 3)'),
+          _InfoRow(emoji: '📦', label: 'Version', value: '1.0.0 (Beta)'),
           const SizedBox(height: 8),
           _InfoRow(emoji: '🌍', label: 'Zone coverage', value: 'US Zones 4a–10b'),
           const SizedBox(height: 8),
-          _InfoRow(emoji: '🪴', label: 'Plant database', value: '12,000+ varieties'),
+          _InfoRow(emoji: '🪴', label: 'Plant database', value: '2,200+ varieties'),
           const SizedBox(height: 24),
 
           // ── Session ───────────────────────────────────────

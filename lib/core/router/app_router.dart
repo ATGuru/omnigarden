@@ -65,26 +65,26 @@ abstract final class AppRoutes {
 // ── Provider ─────────────────────────────────────────────
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
-  final authState = ref.watch(authStateProvider);
+  final notifier = ref.watch(authStateNotifierProvider.notifier);
+  
+  final listenable = _AuthChangeNotifier(ref);
+  ref.onDispose(listenable.dispose);
 
   return GoRouter(
     initialLocation: AppRoutes.splash,
-    debugLogDiagnostics: true,
     navigatorKey: rootNavigatorKey,
+    refreshListenable: listenable,
     redirect: (context, state) {
-      final authValue   = ref.watch(authStateNotifierProvider);
+      final authValue   = ref.read(authStateNotifierProvider);
       final isLoading   = authValue.isLoading;
-      final authState   = authValue.value;
-      final isAuthed    = authState?.isAuthenticated ?? false;
-      final isGuest     = authState?.isGuest ?? false;
-      final hasZip      = authState?.hasZip ?? false;
+      final authData    = authValue.value;
+      final isAuthed    = authData?.isAuthenticated ?? false;
+      final isGuest     = authData?.isGuest ?? false;
+      final hasZip      = authData?.hasZip ?? false;
       final currentRoute = state.matchedLocation;
       print('REDIRECT: route=$currentRoute isAuthed=$isAuthed isGuest=$isGuest hasZip=$hasZip isLoading=$isLoading');
-      
-      // Don't redirect away from splash screen - it handles its own navigation
+
       if (currentRoute == '/') return null;
-      
-      // Never redirect away from zip-entry screen regardless of auth state
       if (currentRoute == '/zip-entry') return null;
 
       final isAuthRoute = [
@@ -95,22 +95,11 @@ GoRouter appRouter(AppRouterRef ref) {
         AppRoutes.signUp,
       ].contains(currentRoute);
 
-      // Still loading — stay on splash
       if (isLoading) return null;
 
-      // Authed or guest, has zip, on auth screen → home
-      // Prevent multiple redirects to / - only redirect to home once
-      if ((isAuthed || isGuest) && hasZip && isAuthRoute && currentRoute != '/') {
-        return AppRoutes.home;
-      }
-
-      // Not authed, not guest, not on an auth screen → onboarding
-      if (!isAuthed && !isGuest && !isAuthRoute) return AppRoutes.onboarding;
-
-      // Not authed, not guest, stuck on splash → onboarding
-      if (!isAuthed && !isGuest && currentRoute == AppRoutes.splash) {
-        return AppRoutes.onboarding;
-      }
+      if ((isAuthed || isGuest) && hasZip && isAuthRoute) return AppRoutes.home;
+      if ((isAuthed || isGuest) && !hasZip && isAuthRoute && currentRoute != AppRoutes.zipEntry) return AppRoutes.zipEntry;
+      if (!isAuthed && !isGuest && !isAuthRoute && currentRoute != AppRoutes.signIn && currentRoute != AppRoutes.signUp) return AppRoutes.onboarding;
 
       return null;
     },
@@ -259,4 +248,28 @@ class _RouterErrorScreen extends StatelessWidget {
       child: Text('Navigation error: ${error?.toString() ?? "Unknown"}'),
     ),
   );
+}
+
+class _AuthChangeNotifier extends ChangeNotifier {
+  _AuthChangeNotifier(this._ref) {
+    _ref.listen(authStateNotifierProvider, (previous, next) {
+      // Only notify if loading state changed, or auth/guest/zip values changed
+      final prevLoading = previous?.isLoading ?? false;
+      final nextLoading = next.isLoading;
+      final prevAuthed = previous?.value?.isAuthenticated ?? false;
+      final nextAuthed = next.value?.isAuthenticated ?? false;
+      final prevGuest = previous?.value?.isGuest ?? false;
+      final nextGuest = next.value?.isGuest ?? false;
+      final prevZip = previous?.value?.hasZip ?? false;
+      final nextZip = next.value?.hasZip ?? false;
+
+      if (prevLoading != nextLoading ||
+          prevAuthed != nextAuthed ||
+          prevGuest != nextGuest ||
+          prevZip != nextZip) {
+        notifyListeners();
+      }
+    });
+  }
+  final Ref _ref;
 }

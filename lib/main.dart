@@ -35,8 +35,11 @@ Future<void> main() async {
   await Supabase.initialize(
     url: 'https://lltbcsnhapqmeyuzgmwj.supabase.co',
     anonKey: dotenv.env['SUPABASE_PUBLISHABLE_KEY']!,
-    authOptions: const FlutterAuthClientOptions(
+    authOptions: FlutterAuthClientOptions(
       authFlowType: AuthFlowType.pkce,
+      localStorage: SharedPreferencesLocalStorage(
+        persistSessionKey: 'supabase_session',
+      ),
     ),
   );
 

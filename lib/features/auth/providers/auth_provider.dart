@@ -27,31 +27,40 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     final prefs = await ref.watch(sharedPrefsProvider.future);
     final isGuest = prefs.getBool(_guestKey) ?? false;
 
-    // Listen to auth state changes and rebuild when they fire
-    ref.listen(authStateNotifierProvider, (_, __) {});
-  
-    // Subscribe to Supabase auth stream — this triggers rebuild on sign in/out
-    final completer = Completer<void>();
-    late StreamSubscription sub;
-    sub = _client.auth.onAuthStateChange.listen((data) {
-      sub.cancel();
-      completer.complete();
-    });
-  
-  // Wait up to 3 seconds for session restore, then continue
-  await completer.future.timeout(
-    const Duration(seconds: 3),
-    onTimeout: () {},
-  );
-  
-  final session = _client.auth.currentSession;
-  final user = session?.user != null
-      ? AppUser(id: session!.user.id, email: session.user.email ?? '')
-      : null;
+    // Check if Supabase already restored the session synchronously.
+    // If not, wait specifically for initialSession or signedIn event (up to 5s).
+    Session? session = _client.auth.currentSession;
 
-  String? zip = prefs.getString(_zipKey);
-  String? zone = prefs.getString(_zoneKey);
-  String? location = prefs.getString('user_location');
+    if (session == null) {
+      final completer = Completer<void>();
+      late StreamSubscription sub;
+      sub = _client.auth.onAuthStateChange.listen((data) {
+        if (data.event == AuthChangeEvent.initialSession ||
+            data.event == AuthChangeEvent.signedIn) {
+          if (!completer.isCompleted) {
+            sub.cancel();
+            completer.complete();
+          }
+        }
+      });
+
+      await completer.future.timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          sub.cancel();
+        },
+      );
+
+      session = _client.auth.currentSession;
+    }
+
+    final user = session?.user != null
+        ? AppUser(id: session!.user.id, email: session.user.email ?? '')
+        : null;
+
+    String? zip = prefs.getString(_zipKey);
+    String? zone = prefs.getString(_zoneKey);
+    String? location = prefs.getString('user_location');
 
   if (user != null && (zip == null || zone == null)) {
     final profile = await _fetchProfile(user.id);
@@ -66,7 +75,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   }
 
   // Keep listening for future auth changes
-  _client.auth.onAuthStateChange.listen((data) {
+  final authSub = _client.auth.onAuthStateChange.listen((data) {
     final supaUser = data.session?.user;
     if (supaUser != null) {
       final current = state.value ?? const AuthState();
@@ -79,12 +88,13 @@ class AuthStateNotifier extends _$AuthStateNotifier {
       state = AsyncData(current.copyWith(user: null));
     }
   });
+  ref.onDispose(() => authSub.cancel());
 
   if (user != null) {
     unawaited(ref.read(gardenSchedulerProvider).scheduleAll(user.id, zone ?? 'Zone 6a'));
   }
 
-  print('AUTH BUILD: zip=$zip zone=$zone location=$location user=${user?.id}');
+  print('AUTH BUILD RUNNING: zip=$zip zone=$zone location=$location user=${user?.id} session=${session?.accessToken != null}');
 
   return AuthState(
     user: user,
@@ -109,52 +119,60 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   }
 
   Future<void> signUp({required String email, required String password}) async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      final user = await ref.read(authServiceProvider).signUp(
-        email: email, password: password,
-      );
-      final current = state.value ?? const AuthState();
-      return current.copyWith(user: user, isGuest: false);
-    });
+  try {
+    final user = await ref.read(authServiceProvider).signUp(
+      email: email, password: password,
+    );
+    final current = state.value ?? const AuthState();
+    state = AsyncData(current.copyWith(user: user, isGuest: false));
+  } catch (e) {
+    state = AsyncError(e, StackTrace.current);
   }
+}
 
   Future<void> signIn({required String email, required String password}) async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      final user = await ref.read(authServiceProvider).signIn(
-        email: email, password: password,
-      );
-      final prefs = await ref.read(sharedPrefsProvider.future);
+  print('NOTIFIER SIGNIN START: email=$email');
+  try {
+    final user = await ref.read(authServiceProvider).signIn(
+      email: email, password: password,
+    );
+    print('NOTIFIER SIGNIN GOT USER: ${user?.id}');
+    final prefs = await ref.read(sharedPrefsProvider.future);
 
-      // Load zip/zone from Supabase on every login
-      String? zip  = prefs.getString(_zipKey);
-      String? zone = prefs.getString(_zoneKey);
-      String? location = prefs.getString('user_location');
+    String? zip = prefs.getString(_zipKey);
+    String? zone = prefs.getString(_zoneKey);
+    String? location = prefs.getString('user_location');
 
-      if (user != null && (zip == null || zone == null)) {
-        final profile = await _fetchProfile(user.id);
-        if (profile != null) {
-          zip  = profile['zip'];
-          zone = profile['zone'];
-          location = profile['location'];
-          if (zip  != null) await prefs.setString(_zipKey,  zip);
-          if (zone != null) await prefs.setString(_zoneKey, zone);
-          if (location != null) await prefs.setString('user_location', location);
-        }
+    if (user != null && (zip == null || zone == null)) {
+      final profile = await _fetchProfile(user.id);
+      if (profile != null) {
+        zip = profile['zip'];
+        zone = profile['zone'];
+        location = profile['location'];
+        if (zip != null) await prefs.setString(_zipKey, zip);
+        if (zone != null) await prefs.setString(_zoneKey, zone);
+        if (location != null) await prefs.setString('user_location', location);
       }
+    }
 
-      final current = state.value ?? const AuthState();
-      
-      // Schedule garden notifications
-      if (user != null) {
-        final scheduler = ref.read(gardenSchedulerProvider);
-        unawaited(scheduler.scheduleAll(user.id, zone ?? 'Zone 6a'));
-      }
-      
-      return current.copyWith(user: user, isGuest: false, zip: zip, zone: zone, location: location);
-    });
+    if (user != null) {
+      final scheduler = ref.read(gardenSchedulerProvider);
+      unawaited(scheduler.scheduleAll(user.id, zone ?? 'Zone 6a'));
+    }
+
+    final current = state.value ?? const AuthState();
+    state = AsyncData(current.copyWith(
+      user: user,
+      isGuest: false,
+      zip: zip,
+      zone: zone,
+      location: location,
+    ));
+  } catch (e, st) {
+    print('NOTIFIER SIGNIN ERROR: $e');
+    state = AsyncError(e, st);
   }
+}
 
   Future<void> continueAsGuest() async {
     final prefs = await ref.read(sharedPrefsProvider.future);

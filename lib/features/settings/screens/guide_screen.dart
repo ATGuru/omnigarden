@@ -60,7 +60,7 @@ class GuideScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'OmniGarden is a comprehensive gardening companion built specifically for Midwest growers. It combines a massive 12,000+ plant encyclopedia, personalized planting calendars based on your USDA hardiness zone, a detailed garden journal, and lunar gardening guidance—all in one powerful app.',
+                    'OmniGarden is a comprehensive gardening companion built specifically for Midwest growers. It combines a curated 2,200+ plant encyclopedia, personalized planting calendars based on your USDA hardiness zone, a detailed garden journal, and lunar gardening guidance—all in one powerful app.',
                     style: AppTypography.bodyS(color: AppColors.warmGray).copyWith(height: 1.5),
                   ),
                   const SizedBox(height: 12),
@@ -157,14 +157,14 @@ class GuideScreen extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 12),
                   Text(
-                    'Explore 12,000+ Plant Varieties',
+                    'Explore 2,200+ Plant Varieties',
                     style: AppTypography.bodyM(
                       color: isDark ? AppColors.cream : AppColors.ink,
                     ).copyWith(height: 1.4),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Browse or search through our extensive database of over 12,000 plant varieties specifically curated for Midwest growing conditions. Use the search bar to find plants by common name, scientific name, or characteristics like "drought tolerant" or "shade loving."',
+                    'Browse or search through our curated database of over 2,200 plant varieties covering vegetables, herbs, fruits, and flowers suited for Midwest growing conditions. Use the search bar to find plants by common name, scientific name, or characteristics like "drought tolerant" or "shade loving."',
                     style: AppTypography.bodyS(color: AppColors.warmGray).copyWith(height: 1.5),
                   ),
                   const SizedBox(height: 12),

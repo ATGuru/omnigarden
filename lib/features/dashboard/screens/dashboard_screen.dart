@@ -143,7 +143,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       _QuickActionRow(
                         emoji: '🔍',
                         title: 'Search Plants',
-                        subtitle: '12,000+ varieties',
+                        subtitle: '2,200+ varieties',
                         onTap: () => context.go('/search'),
                       ),
                       const SizedBox(height: 8),
