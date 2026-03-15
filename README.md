@@ -9,6 +9,16 @@ A mobile gardening app for Midwest US gardeners. Plan your garden, track your pl
 ## Download
 [⬇️ Download OmniGarden Beta APK](https://github.com/ATGuru/omnigarden/releases/download/v1.0.0-beta/app-release.apk)
 
+## Screenshots
+<p float="left">
+  <img src="assets/screenshots/OmniGarden_Dashboard.jpg" width="18%" />
+  <img src="assets/screenshots/OmniGarden_search.jpg" width="18%" />
+  <img src="assets/screenshots/OmniGarden_plant.jpg" width="18%" />
+  <img src="assets/screenshots/OmniGarden_plan.jpg" width="18%" />
+  <img src="assets/screenshots/OmniGarden_layout.jpg" width="18%" />
+  <img src="assets/screenshots/OmniGarden_journel.jpg" width="18%" />
+</p>
+
 ## Features
 - 🌿 Plant encyclopedia with 2,200+ vegetables, herbs, fruits, and flowers
 - 🗓 Personalized planting calendar based on your ZIP code and hardiness zone
