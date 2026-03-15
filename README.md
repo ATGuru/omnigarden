@@ -1,16 +1,17 @@
 # OmniGarden 🌱
-
 A mobile gardening app for Midwest US gardeners. Plan your garden, track your plants, and get personalized planting calendars based on your USDA hardiness zone.
 
-**Version:** 1.0.0-beta  
+**Version:** 1.0.0 Beta  
 **Platform:** Android  
 **Developer:** James Sutherland (AllTechGuru)  
 **Contact:** guru_morgan@atguru.xyz
 
-## Features
+## Download
+[⬇️ Download OmniGarden Beta APK](https://github.com/ATGuru/omnigarden/releases/download/v1.0.0-beta/app-release.apk)
 
+## Features
+- 🌿 Plant encyclopedia with 2,200+ vegetables, herbs, fruits, and flowers
 - 🗓 Personalized planting calendar based on your ZIP code and hardiness zone
-- 🌿 Plant encyclopedia with 50+ vegetables, herbs, and fruits
 - 🏡 Garden planner with drag-and-drop square-foot grid layout
 - 📔 Garden journal with photo and video support
 - 📤 Export garden plans and calendars as PDF
@@ -19,7 +20,6 @@ A mobile gardening app for Midwest US gardeners. Plan your garden, track your pl
 - 🔒 Secure cloud sync via Supabase
 
 ## Tech Stack
-
 - Flutter 3.41.4
 - Riverpod (state management)
 - Supabase (database, auth, storage)
@@ -27,13 +27,10 @@ A mobile gardening app for Midwest US gardeners. Plan your garden, track your pl
 - freezed (data classes)
 
 ## Target Regions
-
 Optimized for Midwest US gardeners — USDA hardiness zones 5a through 7b.
 
 ## Privacy Policy
-
 https://atguru.github.io/omnigarden-privacy/
 
 ## License
-
 Copyright (c) 2026 James Sutherland. All Rights Reserved. See LICENSE for details.
