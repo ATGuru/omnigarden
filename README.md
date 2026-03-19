@@ -20,7 +20,7 @@ A mobile gardening app for Midwest US gardeners. Plan your garden, track your pl
 </p>
 
 ## Features
-- 🌿 Plant encyclopedia with 2,200+ vegetables, herbs, fruits, and flowers
+- 🌿 Plant encyclopedia with 1,700+ vegetables, herbs, fruits, and flowers
 - 🗓 Personalized planting calendar based on your ZIP code and hardiness zone
 - 🏡 Garden planner with drag-and-drop square-foot grid layout
 - 📔 Garden journal with photo and video support

@@ -72,6 +72,8 @@ class GardenNotifier extends _$GardenNotifier {
     }
 
     ref.invalidateSelf();
+    // Invalidate related providers
+    ref.invalidate(gardensProvider);
   }
 
   Future<void> updateGarden({
@@ -89,6 +91,8 @@ class GardenNotifier extends _$GardenNotifier {
     }).eq('id', gardenId);
 
     ref.invalidateSelf();
+    // Invalidate related providers
+    ref.invalidate(gardensProvider);
   }
 
   Future<void> deleteGarden(String id) async {
@@ -100,6 +104,11 @@ class GardenNotifier extends _$GardenNotifier {
     
     await _client.from('gardens').delete().eq('id', id).eq('user_id', currentUser.id);
     ref.invalidateSelf();
+    // Invalidate related providers
+    ref.invalidate(gardensProvider);
+    // Also invalidate journal entries and garden plants for this garden
+    ref.invalidate(journalEntriesProvider(id));
+    ref.invalidate(gardenPlantIdsProvider(id));
   }
 }
 
@@ -155,11 +164,15 @@ class JournalNotifier extends _$JournalNotifier {
     });
 
     ref.invalidateSelf();
+    // Invalidate related providers
+    ref.invalidate(journalEntriesProvider(gardenId));
   }
 
-  Future<void> deleteEntry(String id) async {
+  Future<void> deleteEntry(String id, String gardenId) async {
     await _client.from('journal_entries').delete().eq('id', id);
     ref.invalidateSelf();
+    // Invalidate related providers
+    ref.invalidate(journalEntriesProvider(gardenId));
   }
 }
 
@@ -199,6 +212,8 @@ class GardenPlantNotifier extends _$GardenPlantNotifier {
     }
     
     ref.invalidateSelf();
+    // Invalidate related providers
+    ref.invalidate(gardenPlantIdsProvider(gardenId));
   }
 
   Future<void> removePlant(String plantId) async {
@@ -208,5 +223,7 @@ class GardenPlantNotifier extends _$GardenPlantNotifier {
         .eq('garden_id', gardenId)
         .eq('plant_id', plantId);
     ref.invalidateSelf();
+    // Invalidate related providers
+    ref.invalidate(gardenPlantIdsProvider(gardenId));
   }
 }

@@ -349,7 +349,7 @@ class JournalEntryDetailScreen extends ConsumerWidget {
               Navigator.pop(context);
               await ref
                   .read(journalNotifierProvider(entry.gardenId).notifier)
-                  .deleteEntry(entry.id);
+                  .deleteEntry(entry.id, entry.gardenId);
               context.pop();
             },
             child: Text('Delete',

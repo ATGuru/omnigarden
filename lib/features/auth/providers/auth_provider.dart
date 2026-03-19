@@ -204,28 +204,24 @@ class AuthStateNotifier extends _$AuthStateNotifier {
   }
 
   Future<void> deleteAccount() async {
-    final userId = _client.auth.currentUser?.id;
-    if (userId == null) return;
+  final userId = _client.auth.currentUser?.id;
+  if (userId == null) return;
+
+  try {
+    // Single atomic database function handles all cascade deletes
+    await _client.rpc('delete_user_account', params: {'user_id': userId});
     
-    try {
-      // Delete all user data from tables
-      await _client.from('gardens').delete().eq('user_id', userId);
-      await _client.from('garden_plants').delete().eq('user_id', userId);
-      await _client.from('journal_entries').delete().eq('user_id', userId);
-      await _client.from('profiles').delete().eq('id', userId);
-      
-      // Clear local preferences
-      final prefs = await ref.read(sharedPrefsProvider.future);
-      await prefs.clear();
-      
-      // Sign out
-      await signOut();
-      
-    } catch (e) {
-      // Re-throw for UI to handle
-      throw Exception('Failed to delete account: ${e.toString()}');
-    }
+    // Clear local preferences
+    final prefs = await ref.read(sharedPrefsProvider.future);
+    await prefs.clear();
+    
+    // Update state
+    state = AsyncData(const AuthState());
+    
+  } catch (e) {
+    throw Exception('Failed to delete account: ${e.toString()}');
   }
+}
 
   Future<void> signOut() async {
     await ref.read(authServiceProvider).signOut();
