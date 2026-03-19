@@ -94,7 +94,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     unawaited(ref.read(gardenSchedulerProvider).scheduleAll(user.id, zone ?? 'Zone 6a'));
   }
 
-  print('AUTH BUILD RUNNING: zip=$zip zone=$zone location=$location user=${user?.id} session=${session?.accessToken != null}');
+  // AUTH BUILD: zip=$zip zone=$zone location=$location user=${user?.id} session=${session?.accessToken != null}
 
   return AuthState(
     user: user,
@@ -131,12 +131,12 @@ class AuthStateNotifier extends _$AuthStateNotifier {
 }
 
   Future<void> signIn({required String email, required String password}) async {
-  print('NOTIFIER SIGNIN START: email=$email');
+  // NOTIFIER SIGNIN START: email=$email
   try {
     final user = await ref.read(authServiceProvider).signIn(
       email: email, password: password,
     );
-    print('NOTIFIER SIGNIN GOT USER: ${user?.id}');
+    // NOTIFIER SIGNIN GOT USER: ${user?.id}
     final prefs = await ref.read(sharedPrefsProvider.future);
 
     String? zip = prefs.getString(_zipKey);
@@ -169,7 +169,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
       location: location,
     ));
   } catch (e, st) {
-    print('NOTIFIER SIGNIN ERROR: $e');
+    // NOTIFIER SIGNIN ERROR: $e
     state = AsyncError(e, st);
   }
 }

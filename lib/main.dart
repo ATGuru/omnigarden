@@ -23,7 +23,6 @@ Future<void> _requestStartupPermissions() async {
     Permission.camera,
     Permission.photos,
     Permission.videos,
-    Permission.storage,
   ].request();
 }
 
@@ -33,7 +32,7 @@ Future<void> main() async {
   await dotenv.load(fileName: '.env');
 
   await Supabase.initialize(
-    url: 'https://lltbcsnhapqmeyuzgmwj.supabase.co',
+    url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_PUBLISHABLE_KEY']!,
     authOptions: FlutterAuthClientOptions(
       authFlowType: AuthFlowType.pkce,
@@ -51,7 +50,7 @@ Future<void> main() async {
     await prefs.remove('user_location');
     await prefs.remove('is_guest');
     await prefs.setBool('CLEAR_PREFS_FLAG', true);
-    print('🧹 Cleared user preferences (zip, zone, location, guest)');
+    // Cleared user preferences (zip, zone, location, guest)
   }
 
   final cacheService = await createCacheService();
@@ -112,7 +111,7 @@ class _OmniGardenAppState extends ConsumerState<OmniGardenApp>
   @override
   Widget build(BuildContext context) {
     final router    = ref.watch(appRouterProvider);
-    final themeMode = ref.watch(themeMode_Provider);
+    final themeMode = ref.watch(appThemeModeProvider);
 
     return MaterialApp.router(
       title: 'OmniGarden',

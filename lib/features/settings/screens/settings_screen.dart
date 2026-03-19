@@ -69,7 +69,7 @@ class SettingsScreen extends ConsumerWidget {
             emoji: isDark ? '☀️' : '🌑',
             label: 'Dark Mode',
             value: isDark,
-            onChanged: (_) => ref.read(themeMode_Provider.notifier).toggle(),
+            onChanged: (_) => ref.read(appThemeModeProvider.notifier).toggle(),
           ),
           const SizedBox(height: 24),
 
@@ -154,7 +154,7 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           _InfoRow(emoji: '🌿', label: 'App', value: 'OmniGarden'),
           const SizedBox(height: 8),
-          _InfoRow(emoji: '📦', label: 'Version', value: '1.0.0 (Beta)'),
+          _InfoRow(emoji: '📦', label: 'Version', value: '1.0.1 (Beta)'),
           const SizedBox(height: 8),
           _InfoRow(emoji: '🌍', label: 'Zone coverage', value: 'US Zones 4a–10b'),
           const SizedBox(height: 8),

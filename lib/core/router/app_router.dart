@@ -82,7 +82,7 @@ GoRouter appRouter(AppRouterRef ref) {
       final isGuest     = authData?.isGuest ?? false;
       final hasZip      = authData?.hasZip ?? false;
       final currentRoute = state.matchedLocation;
-      print('REDIRECT: route=$currentRoute isAuthed=$isAuthed isGuest=$isGuest hasZip=$hasZip isLoading=$isLoading');
+      // REDIRECT: route=$currentRoute isAuthed=$isAuthed isGuest=$isGuest hasZip=$hasZip isLoading=$isLoading
 
       if (currentRoute == '/') return null;
       if (currentRoute == '/zip-entry') return null;

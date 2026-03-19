@@ -300,7 +300,7 @@ class _GardenPlantIdsProviderElement
   String get gardenId => (origin as GardenPlantIdsProvider).gardenId;
 }
 
-String _$gardenNotifierHash() => r'a1f4b821295ed6809399ea517a5f7d3bc645a725';
+String _$gardenNotifierHash() => r'ad46d3cd501a68d7f7cd66991e6204c8b25fc4b7';
 
 /// See also [GardenNotifier].
 @ProviderFor(GardenNotifier)
@@ -462,7 +462,7 @@ class _JournalNotifierProviderElement
 }
 
 String _$gardenPlantNotifierHash() =>
-    r'85c9cd7c3a21607ee2364873301729a269fdc2c7';
+    r'9c212b0c609d1a39ab1200ab6e790bcfb7cd16c6';
 
 abstract class _$GardenPlantNotifier
     extends BuildlessAutoDisposeAsyncNotifier<List<String>> {

@@ -50,22 +50,22 @@ class AuthService {
 
 class PlantService {
   Future<List<Plant>> searchPlants(String query, {CacheService? cache}) async {
-  // Try cache first
   if (cache != null) {
     final cached = cache.get<List>(CacheService.searchKey(query));
     if (cached != null) {
       return cached
-          .map((p) => _mapPlant(Map<String, dynamic>.from(p)))
-          .toList();
+        .map((p) => _mapPlant(Map<String, dynamic>.from(p)))
+        .toList();
     }
   }
 
+  // Fetch all matches
   final results = await Future.wait([
     _client
         .from('plants')
         .select('*, plant_stages(*), plant_calendar(*), plant_varieties(*)')
         .ilike('common_name', '%$query%')
-        .limit(30),
+        .limit(50),
     _client
         .from('plants')
         .select('*, plant_stages(*), plant_calendar(*), plant_varieties(*)')
@@ -83,20 +83,26 @@ class PlantService {
     }
   }
 
+  final queryLower = query.toLowerCase();
+
+  // Sort: exact match first, then starts with, then word boundary match, then substring match
   combined.sort((a, b) {
-    final aStarts = (a['common_name'] as String)
-        .toLowerCase()
-        .startsWith(query.toLowerCase());
-    final bStarts = (b['common_name'] as String)
-        .toLowerCase()
-        .startsWith(query.toLowerCase());
-    if (aStarts && !bStarts) return -1;
-    if (!aStarts && bStarts) return 1;
-    return (a['common_name'] as String)
-        .compareTo(b['common_name'] as String);
+    final aName = (a['common_name'] as String).toLowerCase();
+    final bName = (b['common_name'] as String).toLowerCase();
+
+    int score(String name) {
+      if (name == queryLower) return 0;                          // exact match
+      if (name.startsWith(queryLower)) return 1;                // prefix match
+      if (name.split(' ').any((w) => w == queryLower)) return 2; // whole word match
+      if (name.split(' ').any((w) => w.startsWith(queryLower))) return 3; // word prefix
+      return 4;                                                  // substring match
+    }
+
+    final diff = score(aName).compareTo(score(bName));
+    if (diff != 0) return diff;
+    return aName.compareTo(bName); // alphabetical within same score
   });
 
-  // Save raw maps to cache
   if (cache != null && combined.isNotEmpty) {
     await cache.set(CacheService.searchKey(query), combined);
   }
@@ -118,13 +124,14 @@ class PlantService {
     final res = await _client
         .from('plants')
         .select('*, plant_stages(*), plant_calendar(*), plant_varieties(*)')
+        .contains('plant_calendar', [{'zone': zone}])
         .limit(6);
 
     return (res as List).map((p) => _mapPlant(p)).toList();
   }
 
   Plant _mapPlant(Map<String, dynamic> p) {
-    print('🌱 RAW PLANT DATA: ${p['common_name']} | watering: ${p['watering_tips']} | soil: ${p['soil_requirements']}');
+    // RAW PLANT DATA: ${p['common_name']} | watering: ${p['watering_tips']} | soil: ${p['soil_requirements']}
     final stagesList = (p['plant_stages'] as List? ?? [])
       ..sort((a, b) =>
           (a['stage_order'] as int).compareTo(b['stage_order'] as int));
@@ -170,6 +177,15 @@ class PlantService {
       soilRequirements: p['soil_requirements'],
       wateringTips: p['watering_tips'],
       harvestingTips: p['harvesting_tips'],
+      propagationTips: p['propagation_tips'],
+      fertilizingTips: p['fertilizing_tips'],
+      pruningTips: p['pruning_tips'],
+      spacing: p['spacing'],
+      plantingDepth: p['planting_depth'],
+      frostTolerance: p['frost_tolerance'],
+      containerGrowing: p['container_growing'],
+      commonMistakes: p['common_mistakes'],
+      funFact: p['fun_fact'],
       stages: stages,
       calendarByZone: calendarByZone,
       varieties: varieties,

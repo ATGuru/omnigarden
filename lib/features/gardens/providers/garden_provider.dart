@@ -85,15 +85,20 @@ class GardenNotifier extends _$GardenNotifier {
     }
     
     await _client.from('gardens').update({
-      'id': gardenId,
       'name': name,
-    }).eq('user_id', currentUser.id);
+    }).eq('id', gardenId);
 
     ref.invalidateSelf();
   }
 
   Future<void> deleteGarden(String id) async {
-    await _client.from('gardens').delete().eq('id', id);
+    // Check if user is authenticated
+    final currentUser = _client.auth.currentUser;
+    if (currentUser == null) {
+      throw Exception('User not authenticated. Please sign in to delete garden.');
+    }
+    
+    await _client.from('gardens').delete().eq('id', id).eq('user_id', currentUser.id);
     ref.invalidateSelf();
   }
 }

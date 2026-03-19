@@ -65,9 +65,10 @@ class _PlantDetailContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calendar = plant.calendarByZone[zone];
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark
+      backgroundColor: isDark
         ? AppColors.soil
         : AppColors.parchment,
       body: CustomScrollView(
@@ -234,6 +235,37 @@ class _PlantDetailContent extends StatelessWidget {
                 // Info tabs
                 _InfoTabs(plant: plant),
                 const SizedBox(height: 28),
+
+                // Fun Fact
+                if (plant.funFact != null) ...[
+                  const SizedBox(height: 28),
+                  SectionLabel(label: 'Did You Know?'),
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppColors.sprout.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMD),
+                      border: Border.all(color: AppColors.sprout.withOpacity(0.3)),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('💡', style: const TextStyle(fontSize: 20)),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            plant.funFact!,
+                            style: AppTypography.bodyS(
+                              color: isDark ? AppColors.cream : AppColors.ink,
+                            ).copyWith(height: 1.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
 
                 // Companions
                 if (plant.companions.isNotEmpty) ...[
@@ -577,8 +609,9 @@ class _PlantDetailSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark
+      backgroundColor: isDark
         ? AppColors.soil
         : AppColors.parchment,
       body: Column(
@@ -783,6 +816,12 @@ class _InfoTabsState extends State<_InfoTabs> {
     {'emoji': '🪱', 'label': 'Soil'},
     {'emoji': '🐛', 'label': 'Pests'},
     {'emoji': '🌾', 'label': 'Harvest'},
+    {'emoji': '🌱', 'label': 'Planting'},
+    {'emoji': '✂️', 'label': 'Pruning'},
+    {'emoji': '🧪', 'label': 'Feeding'},
+    {'emoji': '🪴', 'label': 'Container'},
+    {'emoji': '❄️', 'label': 'Frost'},
+    {'emoji': '⚠️', 'label': 'Mistakes'},
   ];
 
   String? _contentFor(int index) {
@@ -791,8 +830,22 @@ class _InfoTabsState extends State<_InfoTabs> {
       case 1: return widget.plant.soilRequirements;
       case 2: return widget.plant.pestsDiseases;
       case 3: return widget.plant.harvestingTips;
+      case 4: return _plantingContent();
+      case 5: return widget.plant.pruningTips;
+      case 6: return widget.plant.fertilizingTips;
+      case 7: return widget.plant.containerGrowing;
+      case 8: return widget.plant.frostTolerance;
+      case 9: return widget.plant.commonMistakes;
       default: return null;
     }
+  }
+
+  String? _plantingContent() {
+    final parts = <String>[];
+    if (widget.plant.propagationTips != null) parts.add('🌱 ${widget.plant.propagationTips}');
+    if (widget.plant.spacing != null) parts.add('📐 Spacing: ${widget.plant.spacing}');
+    if (widget.plant.plantingDepth != null) parts.add('⬇️ Depth: ${widget.plant.plantingDepth}');
+    return parts.isEmpty ? null : parts.join('\n\n');
   }
 
   @override
@@ -803,56 +856,56 @@ class _InfoTabsState extends State<_InfoTabs> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Tab row
-        Row(
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
           children: List.generate(_tabs.length, (i) {
             final isSelected = _selected == i;
             final hasData = _contentFor(i) != null;
-            return Expanded(
-              child: GestureDetector(
-                onTap: hasData
-                    ? () => setState(() =>
-                        _selected = _selected == i ? null : i)
-                    : null,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 150),
-                  margin: EdgeInsets.only(right: i < _tabs.length - 1 ? 8 : 0),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
+            return GestureDetector(
+              onTap: hasData
+                  ? () => setState(() =>
+                      _selected = _selected == i ? null : i)
+                  : null,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                width: (MediaQuery.of(context).size.width - 56) / 5,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.terracotta
+                      : (isDark ? AppColors.surfaceDark : Colors.white),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMD),
+                  border: Border.all(
                     color: isSelected
                         ? AppColors.terracotta
-                        : (isDark ? AppColors.surfaceDark : Colors.white),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMD),
-                    border: Border.all(
-                      color: isSelected
-                            ? AppColors.terracotta
-                            : (isDark
-                                ? AppColors.borderDark
-                                : AppColors.borderLight),
+                        : (isDark
+                            ? AppColors.borderDark
+                            : AppColors.borderLight),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      _tabs[i]['emoji']!,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: hasData ? null : Colors.grey,
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        _tabs[i]['emoji']!,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: hasData ? null : Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        _tabs[i]['label']!,
-                        style: AppTypography.monoS(
-                          color: isSelected
-                              ? Colors.white
-                              : (hasData
-                                  ? (isDark ? AppColors.cream : AppColors.ink)
-                                  : AppColors.warmGray),
-                        ).copyWith(fontSize: 9),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _tabs[i]['label']!,
+                      style: AppTypography.monoS(
+                        color: isSelected
+                            ? Colors.white
+                            : (hasData
+                                ? (isDark ? AppColors.cream : AppColors.ink)
+                                : AppColors.warmGray),
+                      ).copyWith(fontSize: 9),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             );

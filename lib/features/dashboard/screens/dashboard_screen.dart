@@ -47,6 +47,7 @@ final startingSoonProvider = FutureProvider<List<Map<String, dynamic>>>((ref) as
   // Map plant to garden name + calendar data
   final results = <Map<String, dynamic>>[];
   for (final r in res) {
+    if (plants.isEmpty) continue;
     final plant = plants.firstWhere(
       (p) => p.id == r['plant_id'],
       orElse: () => plants.first,
@@ -225,7 +226,7 @@ class _DashboardHero extends ConsumerWidget {
       actions: [
         IconButton(
           icon: Text(isDark ? '☀️' : '🌑', style: const TextStyle(fontSize: 20)),
-          onPressed: () => ref.read(themeMode_Provider.notifier).toggle(),
+          onPressed: () => ref.read(appThemeModeProvider.notifier).toggle(),
         ),
         IconButton(
           icon: const Icon(Icons.settings_outlined, color: AppColors.cream),

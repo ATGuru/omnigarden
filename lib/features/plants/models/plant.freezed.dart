@@ -34,6 +34,15 @@ mixin _$Plant {
   String? get soilRequirements => throw _privateConstructorUsedError;
   String? get wateringTips => throw _privateConstructorUsedError;
   String? get harvestingTips => throw _privateConstructorUsedError;
+  String? get propagationTips => throw _privateConstructorUsedError;
+  String? get fertilizingTips => throw _privateConstructorUsedError;
+  String? get pruningTips => throw _privateConstructorUsedError;
+  String? get spacing => throw _privateConstructorUsedError;
+  String? get plantingDepth => throw _privateConstructorUsedError;
+  String? get frostTolerance => throw _privateConstructorUsedError;
+  String? get containerGrowing => throw _privateConstructorUsedError;
+  String? get commonMistakes => throw _privateConstructorUsedError;
+  String? get funFact => throw _privateConstructorUsedError;
   List<PlantStage> get stages => throw _privateConstructorUsedError;
   Map<String, PlantCalendar> get calendarByZone =>
       throw _privateConstructorUsedError;
@@ -64,6 +73,15 @@ abstract class $PlantCopyWith<$Res> {
       String? soilRequirements,
       String? wateringTips,
       String? harvestingTips,
+      String? propagationTips,
+      String? fertilizingTips,
+      String? pruningTips,
+      String? spacing,
+      String? plantingDepth,
+      String? frostTolerance,
+      String? containerGrowing,
+      String? commonMistakes,
+      String? funFact,
       List<PlantStage> stages,
       Map<String, PlantCalendar> calendarByZone,
       List<PlantVariety> varieties});
@@ -96,6 +114,15 @@ class _$PlantCopyWithImpl<$Res, $Val extends Plant>
     Object? soilRequirements = freezed,
     Object? wateringTips = freezed,
     Object? harvestingTips = freezed,
+    Object? propagationTips = freezed,
+    Object? fertilizingTips = freezed,
+    Object? pruningTips = freezed,
+    Object? spacing = freezed,
+    Object? plantingDepth = freezed,
+    Object? frostTolerance = freezed,
+    Object? containerGrowing = freezed,
+    Object? commonMistakes = freezed,
+    Object? funFact = freezed,
     Object? stages = null,
     Object? calendarByZone = null,
     Object? varieties = null,
@@ -157,6 +184,42 @@ class _$PlantCopyWithImpl<$Res, $Val extends Plant>
           ? _value.harvestingTips
           : harvestingTips // ignore: cast_nullable_to_non_nullable
               as String?,
+      propagationTips: freezed == propagationTips
+          ? _value.propagationTips
+          : propagationTips // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fertilizingTips: freezed == fertilizingTips
+          ? _value.fertilizingTips
+          : fertilizingTips // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pruningTips: freezed == pruningTips
+          ? _value.pruningTips
+          : pruningTips // ignore: cast_nullable_to_non_nullable
+              as String?,
+      spacing: freezed == spacing
+          ? _value.spacing
+          : spacing // ignore: cast_nullable_to_non_nullable
+              as String?,
+      plantingDepth: freezed == plantingDepth
+          ? _value.plantingDepth
+          : plantingDepth // ignore: cast_nullable_to_non_nullable
+              as String?,
+      frostTolerance: freezed == frostTolerance
+          ? _value.frostTolerance
+          : frostTolerance // ignore: cast_nullable_to_non_nullable
+              as String?,
+      containerGrowing: freezed == containerGrowing
+          ? _value.containerGrowing
+          : containerGrowing // ignore: cast_nullable_to_non_nullable
+              as String?,
+      commonMistakes: freezed == commonMistakes
+          ? _value.commonMistakes
+          : commonMistakes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      funFact: freezed == funFact
+          ? _value.funFact
+          : funFact // ignore: cast_nullable_to_non_nullable
+              as String?,
       stages: null == stages
           ? _value.stages
           : stages // ignore: cast_nullable_to_non_nullable
@@ -195,6 +258,15 @@ abstract class _$$PlantImplCopyWith<$Res> implements $PlantCopyWith<$Res> {
       String? soilRequirements,
       String? wateringTips,
       String? harvestingTips,
+      String? propagationTips,
+      String? fertilizingTips,
+      String? pruningTips,
+      String? spacing,
+      String? plantingDepth,
+      String? frostTolerance,
+      String? containerGrowing,
+      String? commonMistakes,
+      String? funFact,
       List<PlantStage> stages,
       Map<String, PlantCalendar> calendarByZone,
       List<PlantVariety> varieties});
@@ -225,6 +297,15 @@ class __$$PlantImplCopyWithImpl<$Res>
     Object? soilRequirements = freezed,
     Object? wateringTips = freezed,
     Object? harvestingTips = freezed,
+    Object? propagationTips = freezed,
+    Object? fertilizingTips = freezed,
+    Object? pruningTips = freezed,
+    Object? spacing = freezed,
+    Object? plantingDepth = freezed,
+    Object? frostTolerance = freezed,
+    Object? containerGrowing = freezed,
+    Object? commonMistakes = freezed,
+    Object? funFact = freezed,
     Object? stages = null,
     Object? calendarByZone = null,
     Object? varieties = null,
@@ -286,6 +367,42 @@ class __$$PlantImplCopyWithImpl<$Res>
           ? _value.harvestingTips
           : harvestingTips // ignore: cast_nullable_to_non_nullable
               as String?,
+      propagationTips: freezed == propagationTips
+          ? _value.propagationTips
+          : propagationTips // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fertilizingTips: freezed == fertilizingTips
+          ? _value.fertilizingTips
+          : fertilizingTips // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pruningTips: freezed == pruningTips
+          ? _value.pruningTips
+          : pruningTips // ignore: cast_nullable_to_non_nullable
+              as String?,
+      spacing: freezed == spacing
+          ? _value.spacing
+          : spacing // ignore: cast_nullable_to_non_nullable
+              as String?,
+      plantingDepth: freezed == plantingDepth
+          ? _value.plantingDepth
+          : plantingDepth // ignore: cast_nullable_to_non_nullable
+              as String?,
+      frostTolerance: freezed == frostTolerance
+          ? _value.frostTolerance
+          : frostTolerance // ignore: cast_nullable_to_non_nullable
+              as String?,
+      containerGrowing: freezed == containerGrowing
+          ? _value.containerGrowing
+          : containerGrowing // ignore: cast_nullable_to_non_nullable
+              as String?,
+      commonMistakes: freezed == commonMistakes
+          ? _value.commonMistakes
+          : commonMistakes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      funFact: freezed == funFact
+          ? _value.funFact
+          : funFact // ignore: cast_nullable_to_non_nullable
+              as String?,
       stages: null == stages
           ? _value._stages
           : stages // ignore: cast_nullable_to_non_nullable
@@ -320,6 +437,15 @@ class _$PlantImpl implements _Plant {
       this.soilRequirements,
       this.wateringTips,
       this.harvestingTips,
+      this.propagationTips,
+      this.fertilizingTips,
+      this.pruningTips,
+      this.spacing,
+      this.plantingDepth,
+      this.frostTolerance,
+      this.containerGrowing,
+      this.commonMistakes,
+      this.funFact,
       final List<PlantStage> stages = const [],
       final Map<String, PlantCalendar> calendarByZone = const {},
       final List<PlantVariety> varieties = const []})
@@ -366,6 +492,24 @@ class _$PlantImpl implements _Plant {
   final String? wateringTips;
   @override
   final String? harvestingTips;
+  @override
+  final String? propagationTips;
+  @override
+  final String? fertilizingTips;
+  @override
+  final String? pruningTips;
+  @override
+  final String? spacing;
+  @override
+  final String? plantingDepth;
+  @override
+  final String? frostTolerance;
+  @override
+  final String? containerGrowing;
+  @override
+  final String? commonMistakes;
+  @override
+  final String? funFact;
   final List<PlantStage> _stages;
   @override
   @JsonKey()
@@ -395,7 +539,7 @@ class _$PlantImpl implements _Plant {
 
   @override
   String toString() {
-    return 'Plant(id: $id, commonName: $commonName, latinName: $latinName, emoji: $emoji, sunRequirement: $sunRequirement, waterNeeds: $waterNeeds, matureHeight: $matureHeight, companions: $companions, daysToMaturity: $daysToMaturity, imageUrl: $imageUrl, pestsDiseases: $pestsDiseases, soilRequirements: $soilRequirements, wateringTips: $wateringTips, harvestingTips: $harvestingTips, stages: $stages, calendarByZone: $calendarByZone, varieties: $varieties)';
+    return 'Plant(id: $id, commonName: $commonName, latinName: $latinName, emoji: $emoji, sunRequirement: $sunRequirement, waterNeeds: $waterNeeds, matureHeight: $matureHeight, companions: $companions, daysToMaturity: $daysToMaturity, imageUrl: $imageUrl, pestsDiseases: $pestsDiseases, soilRequirements: $soilRequirements, wateringTips: $wateringTips, harvestingTips: $harvestingTips, propagationTips: $propagationTips, fertilizingTips: $fertilizingTips, pruningTips: $pruningTips, spacing: $spacing, plantingDepth: $plantingDepth, frostTolerance: $frostTolerance, containerGrowing: $containerGrowing, commonMistakes: $commonMistakes, funFact: $funFact, stages: $stages, calendarByZone: $calendarByZone, varieties: $varieties)';
   }
 
   @override
@@ -429,6 +573,22 @@ class _$PlantImpl implements _Plant {
                 other.wateringTips == wateringTips) &&
             (identical(other.harvestingTips, harvestingTips) ||
                 other.harvestingTips == harvestingTips) &&
+            (identical(other.propagationTips, propagationTips) ||
+                other.propagationTips == propagationTips) &&
+            (identical(other.fertilizingTips, fertilizingTips) ||
+                other.fertilizingTips == fertilizingTips) &&
+            (identical(other.pruningTips, pruningTips) ||
+                other.pruningTips == pruningTips) &&
+            (identical(other.spacing, spacing) || other.spacing == spacing) &&
+            (identical(other.plantingDepth, plantingDepth) ||
+                other.plantingDepth == plantingDepth) &&
+            (identical(other.frostTolerance, frostTolerance) ||
+                other.frostTolerance == frostTolerance) &&
+            (identical(other.containerGrowing, containerGrowing) ||
+                other.containerGrowing == containerGrowing) &&
+            (identical(other.commonMistakes, commonMistakes) ||
+                other.commonMistakes == commonMistakes) &&
+            (identical(other.funFact, funFact) || other.funFact == funFact) &&
             const DeepCollectionEquality().equals(other._stages, _stages) &&
             const DeepCollectionEquality()
                 .equals(other._calendarByZone, _calendarByZone) &&
@@ -438,25 +598,35 @@ class _$PlantImpl implements _Plant {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      commonName,
-      latinName,
-      emoji,
-      sunRequirement,
-      waterNeeds,
-      matureHeight,
-      const DeepCollectionEquality().hash(_companions),
-      daysToMaturity,
-      imageUrl,
-      pestsDiseases,
-      soilRequirements,
-      wateringTips,
-      harvestingTips,
-      const DeepCollectionEquality().hash(_stages),
-      const DeepCollectionEquality().hash(_calendarByZone),
-      const DeepCollectionEquality().hash(_varieties));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        commonName,
+        latinName,
+        emoji,
+        sunRequirement,
+        waterNeeds,
+        matureHeight,
+        const DeepCollectionEquality().hash(_companions),
+        daysToMaturity,
+        imageUrl,
+        pestsDiseases,
+        soilRequirements,
+        wateringTips,
+        harvestingTips,
+        propagationTips,
+        fertilizingTips,
+        pruningTips,
+        spacing,
+        plantingDepth,
+        frostTolerance,
+        containerGrowing,
+        commonMistakes,
+        funFact,
+        const DeepCollectionEquality().hash(_stages),
+        const DeepCollectionEquality().hash(_calendarByZone),
+        const DeepCollectionEquality().hash(_varieties)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -488,6 +658,15 @@ abstract class _Plant implements Plant {
       final String? soilRequirements,
       final String? wateringTips,
       final String? harvestingTips,
+      final String? propagationTips,
+      final String? fertilizingTips,
+      final String? pruningTips,
+      final String? spacing,
+      final String? plantingDepth,
+      final String? frostTolerance,
+      final String? containerGrowing,
+      final String? commonMistakes,
+      final String? funFact,
       final List<PlantStage> stages,
       final Map<String, PlantCalendar> calendarByZone,
       final List<PlantVariety> varieties}) = _$PlantImpl;
@@ -522,6 +701,24 @@ abstract class _Plant implements Plant {
   String? get wateringTips;
   @override
   String? get harvestingTips;
+  @override
+  String? get propagationTips;
+  @override
+  String? get fertilizingTips;
+  @override
+  String? get pruningTips;
+  @override
+  String? get spacing;
+  @override
+  String? get plantingDepth;
+  @override
+  String? get frostTolerance;
+  @override
+  String? get containerGrowing;
+  @override
+  String? get commonMistakes;
+  @override
+  String? get funFact;
   @override
   List<PlantStage> get stages;
   @override

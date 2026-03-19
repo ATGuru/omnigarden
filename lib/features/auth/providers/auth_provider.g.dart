@@ -35,7 +35,7 @@ final authStateProvider = AutoDisposeFutureProvider<AuthState>.internal(
 );
 
 typedef AuthStateRef = AutoDisposeFutureProviderRef<AuthState>;
-String _$authStateNotifierHash() => r'81af221ff8eaaf9f31feb39ecad9b3b127241612';
+String _$authStateNotifierHash() => r'7ce10a6f22c63cfa404134e5e21dc23af9be9bff';
 
 /// See also [AuthStateNotifier].
 @ProviderFor(AuthStateNotifier)

@@ -71,20 +71,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   Future<void> _signIn() async {
-    print('SIGNIN ATTEMPT: captcha=$_captchaVerified email=${_emailCtrl.text.trim()}');
+    // SIGNIN ATTEMPT: captcha=$_captchaVerified email=${_emailCtrl.text.trim()}
     if (!_captchaVerified) {
       setState(() => _error = 'Please solve math problem');
       return;
     }
     
     setState(() => _error = null);
-    print('SIGNIN CALLING NOTIFIER');
+    // SIGNIN CALLING NOTIFIER
     try {
       await ref.read(authStateNotifierProvider.notifier).signIn(
         email: _emailCtrl.text.trim(),
         password: _passwordCtrl.text,
       );
-      print('SIGNIN NOTIFIER RETURNED: isAuthed=${ref.read(authStateNotifierProvider).value?.isAuthenticated}');
+      // SIGNIN NOTIFIER RETURNED: isAuthed=${ref.read(authStateNotifierProvider).value?.isAuthenticated}
       
       // Handle remember me
       final prefs = await SharedPreferences.getInstance();
